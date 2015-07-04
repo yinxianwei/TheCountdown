@@ -10,12 +10,19 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    var dateString:String!
+
     @IBOutlet weak var label: UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
         
         label.font = UIFont(name: "DBLCDTempBlack", size: 60)
 
+        let date = NSDate(timeIntervalSinceNow: 20)
+        var dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        dateString = dateFormatter.stringFromDate(date)
+        
         NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "timerFireMethod:", userInfo: nil, repeats: true)
 
     }
@@ -23,13 +30,16 @@ class ViewController: UIViewController {
     
     func timerFireMethod(timer:NSTimer) {
         
-        let dc =  self.forTheRestWithDateString("2015-05-30 21:54:00")
+        
+        let dc =  self.forTheRestWithDateString(dateString)
         if dc != nil{
             var string = String(format: "%02d:%02d:%02d",dc!.hour,dc!.minute,dc!.second)
 
             label.text = string
         }else{
             timer.invalidate()
+            
+            self.view.backgroundColor = UIColor.blackColor()
         }
         
     }
